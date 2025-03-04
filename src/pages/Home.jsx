@@ -1,5 +1,5 @@
 import React from 'react'
-import { Layout, FormInput, Square, Table, Bell, Loader, Footprints } from "lucide-react";
+import { Layout, FormInput, Square, Table, Bell, Loader, Footprints, Copy, Code, PencilRuler } from "lucide-react";
 import Navbar from '../Site-components/Navbar'
 import ui_kit_1 from '../assets/ui_kit_1.png'
 
@@ -11,6 +11,27 @@ const categories = [
   { icon: <Bell size={30} />, title: "Alerts & Notifications", description: "Modern alerts, toasts, and notifications to keep users informed." },
   { icon: <Loader size={30} />, title: "Loaders & Animations", description: "Smooth spinners, skeleton loaders, and animations for UI feedback." },
   { icon: <Footprints size={30} />, title: "Footers & CTA", description: "Custom footers, call-to-action sections, and banners for engagement." },
+];
+
+const steps = [
+  {
+    id: 1,
+    title: "Browse UI Components",
+    description: "Explore a collection of beautifully designed, ready-to-use UI components.",
+    icon: <Code size={30}/>,
+  },
+  {
+    id: 2,
+    title: "Copy the Code",
+    description: "Simply copy the clean, optimized code for any component you like.",
+    icon: <Copy size={30} />,
+  },
+  {
+    id: 3,
+    title: "Paste & Customize",
+    description: "Paste it into your project and tweak it to match your design—no extra setup required!",
+    icon: <PencilRuler size={30} />,
+  },
 ];
 const Home = () => {
   return (
@@ -38,7 +59,7 @@ const Home = () => {
 
       {/* category section */}
 
-      <main className="py-12">
+      <main className="py-12 min-h-screen">
       <div className="max-w-6xl mx-auto px-4">
         <h2 className="text-xl sm:text-2xl lg:text-3xl text-indigo-600 font-semibold font-headings text-center">Explore Our Component Categories</h2>
         <p className="text-gray-600 text-center mb-12 max-w-2xl mx-auto font-body">
@@ -59,6 +80,34 @@ const Home = () => {
         </div>
       </div>
       </main>
+
+      {/* how it works */}
+
+      <main className="mt-7 min-h-screen  py-12  flex flex-col justify-center items-center border gap-4 px-4 sm:px-6 md:px-8">
+      <div className="text-center">
+        <h2 className="text-xl sm:text-2xl lg:text-3xl text-indigo-600 font-semibold font-headings">
+          How It Works
+        </h2>
+        <p className="text-gray-600 mb-6 sm:mb-12 max-w-2xl mx-auto font-body">
+          🚀 No installations. No dependencies. Just plug & play!
+        </p>
+      </div>
+      
+      <div className="flex flex-col items-center py-6 sm:py-10 w-full">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-full max-w-6xl px-4 sm:px-6 md:px-8">
+          {steps.map((step) => (
+            <div key={step.id} className="bg-white p-4 sm:p-6 rounded-2xl shadow-md hover:shadow-lg transition-all flex flex-col items-center text-center">
+              <div className="mb-4 bg-indigo-100 text-indigo-600 rounded-full p-4">{step.icon}</div>
+              <h3 className="text-lg sm:text-xl font-semibold text-gray-700 mb-2">{step.title}</h3>
+              <p className="text-gray-600 text-sm sm:text-base">{step.description}</p>
+            </div>
+          ))}
+        </div>
+        <button className="mt-6 sm:mt-8 bg-blue-500 text-white px-5 sm:px-6 py-2 sm:py-3 rounded-xl text-base sm:text-lg font-medium hover:bg-blue-600 transition-all">
+          🚀 Start Exploring
+        </button>
+      </div>
+    </main>
     </div>
   )
 }
