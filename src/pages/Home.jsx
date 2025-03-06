@@ -1,6 +1,7 @@
 import React from 'react'
 import { Layout, FormInput, Square, Table, Bell, Loader, Footprints, Copy, Code, PencilRuler } from "lucide-react";
 import Navbar from '../Site-components/Navbar'
+import Footer from '../Site-components/Footer';
 import ui_kit_1 from '../assets/ui_kit_1.png'
 
 const categories = [
@@ -114,6 +115,21 @@ const Home = () => {
           </button>
         </div>
       </main>
+
+      {/* cta section */}
+      <div className="flex flex-col container mx-auto bg-gray-50 rounded-lg items-center justify-center text-center p-8 sm:p-12  shadow-lg">
+        <h2 className="text-xl sm:text-2xl lg:text-3xl text-indigo-600 font-semibold font-headings">
+          Start Building Better UI Today!
+        </h2>
+        <p className='text-gray-600 my-2 max-w-2xl mx-auto font-body text-balance'>Start adding components without the hassle of installing external libraries!</p>
+        <button className="mt-7 px-2 py-3 bg-indigo-600 text-white font-semibold rounded-md hover:bg-indigo-700 cursor-pointer">
+            🚀 Explore Components
+          </button>
+      </div>
+
+
+            {/* footer */}
+            <Footer></Footer>
     </div>
   )
 }
