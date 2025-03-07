@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ChevronRight, Layout, FormInput, Square, Table, Bell, Loader, Footprints, ArrowLeftFromLine, ArrowRightFromLine } from 'lucide-react';
+import { useLocation } from 'react-router-dom';
 import Navbar from '../Site-components/Navbar';
 import Footer from '../Site-components/Footer';
 
 const Docs = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [activeCategory, setActiveCategory] = useState('getting-started');
+    const [activeComponent, setActiveComponent] = useState(null);
+    const location = useLocation();
 
     // Component categories
     const categories = [
@@ -58,6 +61,25 @@ const Docs = () => {
         },
     ];
 
+    // Handle navigation from search results
+    useEffect(() => {
+        if (location.state) {
+            if (location.state.activeCategory) {
+                setActiveCategory(location.state.activeCategory);
+            }
+            if (location.state.activeComponent) {
+                setActiveComponent(location.state.activeComponent);
+                // Scroll to component if needed
+                setTimeout(() => {
+                    const element = document.getElementById(location.state.activeComponent);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }, 100);
+            }
+        }
+    }, [location.state]);
+
     // Toggle sidebar
     const toggleSidebar = () => {
         setIsSidebarOpen(!isSidebarOpen);
@@ -78,15 +100,22 @@ const Docs = () => {
                     {category.name}
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {category.components?.map((component, index) => (
-                        <div key={index} className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-                            <h3 className="text-lg font-semibold mb-2">{component}</h3>
-                            <p className="text-gray-600 mb-4">Coming soon...</p>
-                            <button className="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition-colors">
-                                View Details
-                            </button>
-                        </div>
-                    ))}
+                    {category.components?.map((component, index) => {
+                        const componentId = component.toLowerCase().replace(/\s+/g, '-');
+                        return (
+                            <div 
+                                key={index} 
+                                id={componentId}
+                                className={`bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow ${activeComponent === componentId ? 'ring-2 ring-indigo-500' : ''}`}
+                            >
+                                <h3 className="text-lg font-semibold mb-2">{component}</h3>
+                                <p className="text-gray-600 mb-4">Coming soon...</p>
+                                <button className="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition-colors">
+                                    View Details
+                                </button>
+                            </div>
+                        );
+                    })}
                 </div>
             </div>
         );
@@ -119,6 +148,7 @@ const Docs = () => {
                                         <button
                                             onClick={() => {
                                                 setActiveCategory(category.id);
+                                                setActiveComponent(null);
                                                 if (window.innerWidth < 768) setIsSidebarOpen(false);
                                             }}
                                             className={`w-full flex items-center p-2 rounded-md transition-colors ${activeCategory === category.id
@@ -131,16 +161,28 @@ const Docs = () => {
                                         </button>
                                         {activeCategory === category.id && category.components && (
                                             <ul className="ml-6 mt-2 space-y-1">
-                                                {category.components.map((component, index) => (
-                                                    <li key={index}>
-                                                        <a
-                                                            href={`#${component.toLowerCase().replace(/\s+/g, '-')}`}
-                                                            className="block p-2 text-sm hover:text-indigo-600 transition-colors"
-                                                        >
-                                                            {component}
-                                                        </a>
-                                                    </li>
-                                                ))}
+                                                {category.components.map((component, index) => {
+                                                    const componentId = component.toLowerCase().replace(/\s+/g, '-');
+                                                    return (
+                                                        <li key={index}>
+                                                            <a
+                                                                href={`#${componentId}`}
+                                                                className={`block p-2 text-sm hover:text-indigo-600 transition-colors ${activeComponent === componentId ? 'text-indigo-600 font-medium' : ''}`}
+                                                                onClick={(e) => {
+                                                                    e.preventDefault();
+                                                                    setActiveComponent(componentId);
+                                                                    const element = document.getElementById(componentId);
+                                                                    if (element) {
+                                                                        element.scrollIntoView({ behavior: 'smooth' });
+                                                                    }
+                                                                    if (window.innerWidth < 768) setIsSidebarOpen(false);
+                                                                }}
+                                                            >
+                                                                {component}
+                                                            </a>
+                                                        </li>
+                                                    );
+                                                })}
                                             </ul>
                                         )}
                                     </li>

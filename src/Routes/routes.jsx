@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { SearchProvider } from "../Context/SearchContext";
 
 // Import all pages
 import Home from "../pages/Home";
@@ -12,15 +13,17 @@ import Docs from "../pages/Docs";
 const AppRoutes = () => {
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/docs" element={<Docs />} />
-        {/* <Route path="/components" element={<Components />} />
-        <Route path="/category/:categoryName" element={<Category />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="*" element={<NotFound />} />  */}
-      </Routes>
+      <SearchProvider>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/docs" element={<Docs />} />
+          {/* <Route path="/components" element={<Components />} />
+          <Route path="/category/:categoryName" element={<Category />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="*" element={<NotFound />} />  */}
+        </Routes>
+      </SearchProvider>
     </Router>
   );
 };

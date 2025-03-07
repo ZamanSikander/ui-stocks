@@ -1,9 +1,46 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Menu, X, Search } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useSearch } from '../Context/SearchContext';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { 
+    searchQuery, 
+    setSearchQuery, 
+    searchResults, 
+    isSearching, 
+    navigateToComponent,
+    clearSearch 
+  } = useSearch();
+  const [showResults, setShowResults] = useState(false);
+  const searchRef = useRef(null);
+
+  // Handle search input change
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+    setShowResults(true);
+  };
+
+  // Handle clicking on a search result
+  const handleResultClick = (result) => {
+    navigateToComponent(result);
+    setShowResults(false);
+  };
+
+  // Close search results when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setShowResults(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   return (
     <nav className="bg-gray-50 text-[#616161] container mx-auto md:my-3 sm:my-2 p-4 flex items-center justify-between md:justify-around md:rounded relative">
@@ -25,29 +62,96 @@ const Navbar = () => {
           <a href="#ui-templates" className="hover:text-indigo-600 p-2 md:p-0">UI-Templates</a>
 
           {/* Search Box (for Mobile) */}
-          <div className="md:hidden p-3 w-full">
+          <div className="md:hidden p-3 w-full" ref={searchRef}>
             <div className="relative">
               <input
                 type="text"
-                placeholder="Search..."
+                placeholder="Search components..."
+                value={searchQuery}
+                onChange={handleSearchChange}
                 className="p-2 pr-10 w-full rounded-md bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600"
               />
               <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-700 cursor-pointer" size={20} />
+              
+              {/* Mobile Search Results */}
+              {showResults && searchQuery && (
+                <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-md shadow-lg z-50 max-h-60 overflow-y-auto">
+                  {isSearching ? (
+                    <div className="p-3 text-center text-gray-500">Searching...</div>
+                  ) : searchResults.length > 0 ? (
+                    <ul>
+                      {searchResults.map((result, index) => (
+                        <li 
+                          key={index} 
+                          className="p-3 hover:bg-gray-100 cursor-pointer border-b border-gray-100"
+                          onClick={() => handleResultClick(result)}
+                        >
+                          <div className="font-medium">{result.name}</div>
+                          {result.type === 'component' && (
+                            <div className="text-xs text-gray-500">
+                              in {result.category.name}
+                            </div>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <div className="p-3 text-center text-gray-500">No results found</div>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </div>
       </div>
 
       {/* Search Box (for Desktop) */}
-      <div className="hidden md:flex items-center relative">
+      <div className="hidden md:flex items-center relative" ref={searchRef}>
         <input
           type="text"
-          placeholder="Search..."
+          placeholder="Search components..."
+          value={searchQuery}
+          onChange={handleSearchChange}
           className="p-2 pr-12 rounded-md bg-gray-200 focus:outline-none focus:ring-1 focus:ring-indigo-600 w-64"
         />
-        <div className="absolute right-0 top-1/2 transform -translate-y-1/2 p-2 bg-gray-300 rounded-md">
-          <Search className="text-gray-700 cursor-pointer" size={23} />
-        </div>
+        <button 
+          className="absolute right-0 top-1/2 transform -translate-y-1/2 p-2 bg-gray-300 rounded-md"
+          onClick={() => searchQuery ? clearSearch() : null}
+        >
+          {searchQuery ? (
+            <X className="text-gray-700 cursor-pointer" size={23} />
+          ) : (
+            <Search className="text-gray-700 cursor-pointer" size={23} />
+          )}
+        </button>
+        
+        {/* Desktop Search Results */}
+        {showResults && searchQuery && (
+          <div className="absolute top-full right-0 mt-1 bg-white rounded-md shadow-lg z-50 w-full max-h-80 overflow-y-auto">
+            {isSearching ? (
+              <div className="p-3 text-center text-gray-500">Searching...</div>
+            ) : searchResults.length > 0 ? (
+              <ul>
+                {searchResults.map((result, index) => (
+                  <li 
+                    key={index} 
+                    className="p-3 hover:bg-gray-100 cursor-pointer border-b border-gray-100"
+                    onClick={() => handleResultClick(result)}
+                  >
+                    <div className="font-medium">{result.name}</div>
+                    {result.type === 'component' && (
+                      <div className="text-xs text-gray-500">
+                        in {result.category.name}
+                      </div>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <div className="p-3 text-center text-gray-500">No results found</div>
+            )}
+          </div>
+        )}
       </div>
 
     </nav>
