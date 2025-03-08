@@ -123,13 +123,13 @@ const Home = () => {
         </h2>
         <p className='text-gray-600 my-2 max-w-2xl mx-auto font-body text-balance'>Start adding components without the hassle of installing external libraries!</p>
         <button className="mt-7 px-2 py-3 bg-indigo-600 text-white font-semibold rounded-md hover:bg-indigo-700 cursor-pointer">
-            🚀 Explore Components
-          </button>
+          🚀 Explore Components
+        </button>
       </div>
 
 
-            {/* footer */}
-            <Footer></Footer>
+      {/* footer */}
+      <Footer></Footer>
     </div>
   )
 }

@@ -111,7 +111,7 @@ const Docs = () => {
                                 <h3 className="text-lg font-semibold mb-2">{component}</h3>
                                 <p className="text-gray-600 mb-4">Coming soon...</p>
                                 <button className="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition-colors">
-                                    View Details
+                                    Get Components
                                 </button>
                             </div>
                         );

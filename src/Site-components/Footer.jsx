@@ -3,7 +3,7 @@ import { Linkedin, Twitter, Github } from "lucide-react";
 
 const Footer = () => {
   return (
-    <footer className="w-full py-8 md:py-12 bg-gray-800 text-gray-200 mt-2.5">
+    <footer className="w-full py-8 md:py-12 bg-indigo-700 text-gray-200 mt-2.5">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-12">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 md:gap-12">
           {/* site description section */}
@@ -44,10 +44,10 @@ const Footer = () => {
         </div>
 
         {/* Divider */}
-        <div className="border-t border-gray-700 my-8"></div>
+        <div className="border-t border-gray-50 my-8"></div>
 
         {/* Copyright */}
-        <div className="text-center text-gray-400 text-sm">
+        <div className="text-center text-gray-50 text-sm">
           © {new Date().getFullYear()} UIStocks. All rights reserved.
         </div>
       </div>
